@@ -19,29 +19,29 @@ namespace WebApi.Repository
             return await _context.Proyectos.Where(p => p.UserId == userId).ToListAsync();
         }
 
-        public async Task<Proyecto> GetProyectosByIdAsync(int projectId)
+        public async Task<Proyecto> GetProyectosByIdAsync(int proyectoId)
         {
-            return await _context.Proyectos.FindAsync(projectId);
+            return await _context.Proyectos.FindAsync(proyectoId);
         }
 
-        public async Task AddProjectAsync(Proyecto project)
+        public async Task AddProyectoAsync(Proyecto proyecto)
         {
-            _context.Proyectos.Add(project);
+            _context.Proyectos.Add(proyecto);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateProjectAsync(Proyecto project)
+        public async Task UpdateProyectoAsync(Proyecto proyecto)
         {
-            _context.Entry(project).State = EntityState.Modified;
+            _context.Entry(proyecto).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteProjectAsync(int projectId)
+        public async Task DeleteProyectoAsync(int proyectoId)
         {
-            var project = await _context.Proyectos.FindAsync(projectId);
-            if (project != null)
+            var proyecto = await _context.Proyectos.FindAsync(proyectoId);
+            if (proyecto != null)
             {
-                _context.Proyectos.Remove(project);
+                _context.Proyectos.Remove(proyecto);
                 await _context.SaveChangesAsync();
             }
         }

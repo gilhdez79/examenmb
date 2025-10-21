@@ -5,9 +5,9 @@ namespace WebApi.Interface
     public interface IProyectoRepository
     {
         Task<IEnumerable<Proyecto>> GetProyectosByUserIdAsync(string userId);
-        Task<Proyecto> GetProyectosByIdAsync(int projectId);
-        Task AddProjectAsync(Proyecto project);
-        Task UpdateProjectAsync(Proyecto project);
-        Task DeleteProjectAsync(int projectId);
+        Task<Proyecto> GetProyectosByIdAsync(int proyectoId);
+        Task AddProyectoAsync(Proyecto proyecto);
+        Task UpdateProyectoAsync(Proyecto proyecto);
+        Task DeleteProyectoAsync(int proyectoId);
     }
 }

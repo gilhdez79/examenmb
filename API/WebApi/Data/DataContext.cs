@@ -8,5 +8,6 @@
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
         public DbSet<Proyecto> Proyectos { get; set; }
+        public DbSet<Tarea> Tareas { get; set; }
     }
 }
