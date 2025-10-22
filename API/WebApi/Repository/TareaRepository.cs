@@ -70,5 +70,16 @@ namespace WebApi.Repository
             return  gr;
 
         }
+
+        public async Task AssignTaskAsync(int taskId, string newUserId)
+        {
+            var task = await _context.Tareas.FindAsync(taskId);
+            if (task != null)
+            {
+                task.UserId = newUserId;
+                _context.Entry(task).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

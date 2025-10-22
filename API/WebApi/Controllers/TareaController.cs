@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using WebApi.Dtos;
 using WebApi.Interface;
 using WebApi.Models;
 
@@ -105,6 +107,37 @@ namespace WebApi.Controllers
             }
 
             await _tareaRepository.DeleteTareaAsync(id);
+            return NoContent();
+        }
+        [HttpPut("{id}/assign")]
+        public async Task<IActionResult> AssignTask(int projectId, int id, [FromBody] AssignTaskDto model)
+        {
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var project = await _projectRepository.GetProyectosByIdAsync(projectId);
+
+            // 1. Verificar si el proyecto existe y el usuario actual es el propietario
+            if (project == null || project.UserId != currentUserId)
+            {
+                return NotFound("Proyecto no encontrado o no autorizado.");
+            }
+
+            var task = await _tareaRepository.GetTareaByIdAsync(id);
+
+            // 2. Verificar si la tarea existe y pertenece al proyecto correcto
+            if (task == null || task.ProyectoId != projectId)
+            {
+                return NotFound("Tarea no encontrada o no pertenece a este proyecto.");
+            }
+
+            // 3. Verificar que el nuevo usuario exista
+           // var newAssignedUser = await _userManager.FindByIdAsync(model.NewUserId);
+            //if (newAssignedUser == null)
+            //{
+            //    return BadRequest("El nuevo usuario no existe.");
+            //}
+
+            // 4. Asignar la tarea
+            await _tareaRepository.AssignTaskAsync(id, model.NewUserId);
             return NoContent();
         }
 
