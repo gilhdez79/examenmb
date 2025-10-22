@@ -10,6 +10,6 @@ namespace WebApi.Models
         public string Descripcion { get; set; }
         public int ProyectoId { get; set; }
         public string UserId { get; set; }
-        public string Estado { get; set; }
+        public int Estado { get; set; }
     }
 }

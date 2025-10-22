@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using WebApi.Interface;
 using WebApi.Models;
@@ -18,6 +19,8 @@ namespace WebApi.Controllers
             _projectRepository = projectRepository;
         }
 
+        [HttpGet("public-resource")]
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetProjectTasks(int projectId)
         {
@@ -53,6 +56,7 @@ namespace WebApi.Controllers
             return Ok(task);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddTask(int projectId, [FromBody] Tarea task)
         {
@@ -73,7 +77,7 @@ namespace WebApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTask(int projectId, int id, [FromBody] Tarea task)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var existingTask = await _tareaRepository.GetTareaByIdAsync(id);
 
             if (existingTask == null || existingTask.ProyectoId != projectId || existingTask.UserId != userId)

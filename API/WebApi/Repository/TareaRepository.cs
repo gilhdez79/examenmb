@@ -44,5 +44,31 @@ namespace WebApi.Repository
             _context.Entry(task).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
+
+        public   async Task<IEnumerable<TareaDash>> GetTasksByProyectoDashboardAsync(int userid)
+        {
+            List<TareaDash> dashTarea2 = new List<TareaDash>() ;
+
+            // return dashTarea;
+
+            var gr = await  _context.Tareas.SelectMany(tr=>_context.Proyectos.Where(w=>w.Id == tr.ProyectoId).
+                                      DefaultIfEmpty(), (t,p)=> new
+                                      {
+                                          t.Estado,
+                                          t.Id,
+                                          t.ProyectoId,
+                                          p.Name
+
+                                      }).GroupBy(g=> new { g.Id, g.Name })
+                                      .Select(s=> new TareaDash
+                                      {
+                                          Id = s.Key.Id,
+                                          NombreEstado= s.Key.Name,
+                                          Total = s.Sum(_ => _.Estado),
+
+                                      }).ToListAsync();
+            return  gr;
+
+        }
     }
 }

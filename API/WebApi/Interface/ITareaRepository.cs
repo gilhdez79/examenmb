@@ -5,6 +5,7 @@ namespace WebApi.Interface
     public interface ITareaRepository
     {
         Task<IEnumerable<Tarea>> GetTasksByProyectoIdAsync(int proyectoId);
+        Task<IEnumerable<TareaDash>> GetTasksByProyectoDashboardAsync(int userid);
         Task<Tarea> GetTareaByIdAsync(int taskId);
         Task AddTareaAsync(Tarea task);
         Task UpdateTareaAsync(Tarea task);
