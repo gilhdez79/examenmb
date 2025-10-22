@@ -10,5 +10,7 @@ namespace WebApi.Interface
         Task AddTareaAsync(Tarea task);
         Task UpdateTareaAsync(Tarea task);
         Task DeleteTareaAsync(int taskId);
+        // Nuevo método para asignar tareas
+        Task AssignTaskAsync(int tareaId, string newUserId);
     }
 }
