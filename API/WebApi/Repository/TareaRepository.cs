@@ -47,11 +47,9 @@ namespace WebApi.Repository
 
         public   async Task<IEnumerable<TareaDash>> GetTasksByProyectoDashboardAsync(int userid)
         {
-            List<TareaDash> dashTarea2 = new List<TareaDash>() ;
 
-            // return dashTarea;
 
-            var gr = await  _context.Tareas.SelectMany(tr=>_context.Proyectos.Where(w=>w.Id == tr.ProyectoId).
+           var db = await  _context.Tareas.SelectMany(tr=>_context.Proyectos.Where(w=>w.Id == tr.ProyectoId).
                                       DefaultIfEmpty(), (t,p)=> new
                                       {
                                           t.Estado,
@@ -67,7 +65,7 @@ namespace WebApi.Repository
                                           Total = s.Sum(_ => _.Estado),
 
                                       }).ToListAsync();
-            return  gr;
+            return  db;
 
         }
     }
