@@ -5,7 +5,7 @@ import { TaskListComponent } from './components/tareas/task-list/task-list.compo
 
 export const routes: Routes = [
      { path: 'login', component: LoginComponent },
-  { path: 'projects', component: ProyectosListComponent },
+  { path: 'proyectos', component: ProyectosListComponent },
   { path: 'tasks', component: TaskListComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];

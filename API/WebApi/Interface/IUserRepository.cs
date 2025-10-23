@@ -6,7 +6,8 @@ namespace WebApi.Interface
     {
         Task<User> FindByUsernameAsync(string username);
         Task<User> FindByIdAsync(string id);
-        Task AddUserAsync(User user);
+        Task<bool> AddUserAsync(User user);
+        Task<bool> ValidateUserAsync(LoginRequest user);
         Task<bool> ValidatePasswordAsync(User user, string password);
     }
 }

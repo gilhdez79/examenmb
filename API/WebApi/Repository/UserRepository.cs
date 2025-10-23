@@ -3,6 +3,7 @@ using BCrypt.Net;
 using WebApi.Data;
 using WebApi.Interface;
 using WebApi.Models;
+using System.Reflection;
 
 namespace WebApi.Repository
 {
@@ -22,11 +23,31 @@ namespace WebApi.Repository
         {
             return await _context.Users.FindAsync(id);
         }
+        public async Task<bool> ValidateUserAsync(LoginRequest loginRequest )
+        {
 
-        public async Task AddUserAsync(User user)
+            var _user = await _context.Users.FirstOrDefaultAsync(u=> u.Username == loginRequest.Username);
+            if (_user != null) {
+
+                var validapass = await ValidatePasswordAsync(_user, loginRequest.Password);
+                if (validapass) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public async Task<bool> AddUserAsync(User user)
         {
             _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+         var res =   await _context.SaveChangesAsync();
+
+            if (res>0)
+            {
+                return true;
+            }
+            return false;
         }
 
         public Task<bool> ValidatePasswordAsync(User user, string password)

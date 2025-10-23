@@ -7,7 +7,7 @@
     public class DataContext : DbContext
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) {
-            Database.Migrate();
+
         }
         public DbSet<Proyecto> Proyectos { get; set; }
         public DbSet<Tarea> Tareas { get; set; }
