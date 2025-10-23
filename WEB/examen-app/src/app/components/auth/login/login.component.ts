@@ -16,17 +16,17 @@ export class LoginComponent implements OnInit {
   error = '';
 
   constructor (private fb: FormBuilder, private api: ApiService, private router: Router){
-   this.form = this.fb.group({ email: [''], password: [''] });
+   this.form = this.fb.group({ username: [''], password: [''] });
   }
  ngOnInit(): void {
    
  }
   login() {
-    this.api.post('login', this.form.value)
+    this.api.post('Authentication/login', this.form.value)
     .subscribe({
       next: (res) => {
         localStorage.setItem('token', res.token);
-        this.router.navigate(['/projects']);
+        this.router.navigate(['/proyectos']);
       },
       error: () => this.error = 'Credenciales incorrectas'
     });

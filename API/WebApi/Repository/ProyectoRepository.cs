@@ -16,7 +16,7 @@ namespace WebApi.Repository
 
         public async Task<IEnumerable<Proyecto>> GetProyectosByUserIdAsync(string userId)
         {
-            return await _context.Proyectos.Where(p => p.UserId == userId).ToListAsync();
+            return await _context.Proyectos.Where(p => p.UserName == userId).ToListAsync();
         }
 
         public async Task<Proyecto> GetProyectosByIdAsync(int proyectoId)
@@ -45,6 +45,6 @@ namespace WebApi.Repository
                 await _context.SaveChangesAsync();
             }
         }
- 
+
     }
 }

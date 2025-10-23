@@ -15,10 +15,21 @@ namespace WebApi.Controllers
             _proyectoRepository = proyectoRepository;
         }
         [HttpGet]
+        [Route("GetUserProyectos/{userId}")]
         public async Task<IActionResult> GetUserProyectos(string userId)
         {
-            var Proyectos = await _proyectoRepository.GetProyectosByUserIdAsync(userId);
-            return Ok(Proyectos);
+            try
+            {
+                var user_Id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var Proyectos = await _proyectoRepository.GetProyectosByUserIdAsync(userId);
+                return Ok(Proyectos);
+            }
+            catch (Exception ex)
+            {
+                return NoContent();
+            }
+
+
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProyecto(int id)
@@ -35,7 +46,7 @@ namespace WebApi.Controllers
         public async Task<IActionResult> AddProyecto([FromBody] Proyecto Proyecto)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            Proyecto.UserId = userId;
+            Proyecto.UserName = userId;
             await _proyectoRepository.AddProyectoAsync(Proyecto);
             return CreatedAtAction(nameof(GetProyecto), new { id = Proyecto.Id }, Proyecto);
         }
@@ -45,7 +56,7 @@ namespace WebApi.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var existingProyecto = await _proyectoRepository.GetProyectosByIdAsync(id);
 
-            if (existingProyecto == null || existingProyecto.UserId != userId)
+            if (existingProyecto == null || existingProyecto.UserName != userId)
             {
                 return NotFound();
             }
@@ -61,7 +72,7 @@ namespace WebApi.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var proyecto = await _proyectoRepository.GetProyectosByIdAsync(id);
-            if (proyecto == null || proyecto.UserId != userId)
+            if (proyecto == null || proyecto.UserName != userId)
             {
                 return NotFound();
             }

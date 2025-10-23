@@ -74,7 +74,7 @@ namespace WebApi.Repository
             var task = await _context.Tareas.FindAsync(taskId);
             if (task != null)
             {
-                task.UserId = newUserId;
+                task.UserName = newUserId;
                 _context.Entry(task).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
             }

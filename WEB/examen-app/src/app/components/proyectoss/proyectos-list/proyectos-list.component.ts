@@ -14,7 +14,7 @@ export class ProyectosListComponent implements OnInit {
   projects: any[] = [];
   constructor(private api: ApiService) { }
   ngOnInit(): void {
-    this.api.get('projects').subscribe(res => this.projects = res);
+    this.api.get('proyecto/GetUserProyectos').subscribe(res => this.projects = res);
   }
 
   deleteProject(id: number) {

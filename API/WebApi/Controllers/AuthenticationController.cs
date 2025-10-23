@@ -10,12 +10,17 @@ using WebApi.Dtos;
 using WebApi.Interface;
 using WebApi.Models;
 
+
 namespace WebApi.Controllers
 {
+    [ApiController]
+    [Route("api/[Controller]")]
     public class AuthenticationController : ControllerBase
     {
         private readonly IConfiguration _config;
         private IUserRepository _userRepository;
+
+
         public AuthenticationController(IConfiguration config, IUserRepository userRepository)
         {
             _config = config;
@@ -23,7 +28,7 @@ namespace WebApi.Controllers
         }
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest login)
+        public async Task<IActionResult> Login([FromBody] Login_Request login)
         {
             // In a real application, you would validate credentials against a database
             // or other user store. This is a simplified example.
@@ -55,6 +60,7 @@ namespace WebApi.Controllers
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto model)
         {
@@ -80,7 +86,7 @@ namespace WebApi.Controllers
 
             return Ok(new { Status = "Success", Message = "Usuario creado exitosamente!" });
         }
-        public string EncryptPassword(string password)
+        private string EncryptPassword(string password)
         {
 
           return  BCrypt.Net.BCrypt.HashPassword(password);

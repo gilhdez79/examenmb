@@ -29,7 +29,7 @@ namespace WebApi.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var project = await _projectRepository.GetProyectosByIdAsync(projectId);
 
-            if (project == null || project.UserId != userId)
+            if (project == null || project.UserName != userId)
             {
                 return NotFound("Proyecto no encontrado o no autorizado.");
             }
@@ -44,7 +44,7 @@ namespace WebApi.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var project = await _projectRepository.GetProyectosByIdAsync(projectId);
 
-            if (project == null || project.UserId != userId)
+            if (project == null || project.UserName != userId)
             {
                 return NotFound("Proyecto no encontrado o no autorizado.");
             }
@@ -62,16 +62,16 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> AddTask(int projectId, [FromBody] Tarea task)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+           var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var project = await _projectRepository.GetProyectosByIdAsync(projectId);
 
-            if (project == null || project.UserId != userId)
+            if (project == null || project.UserName != userId)
             {
                 return NotFound("Proyecto no encontrado o no autorizado.");
             }
 
             task.ProyectoId = projectId;
-            task.UserId = userId;
+           // task.UserId = userId;
             await _tareaRepository.AddTareaAsync(task);
             return CreatedAtAction(nameof(GetTask), new { projectId = projectId, id = task.Id }, task);
         }
@@ -82,7 +82,7 @@ namespace WebApi.Controllers
              var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var existingTask = await _tareaRepository.GetTareaByIdAsync(id);
 
-            if (existingTask == null || existingTask.ProyectoId != projectId || existingTask.UserId != userId)
+            if (existingTask == null || existingTask.ProyectoId != projectId || existingTask.UserName != userId)
             {
                 return NotFound("Tarea no encontrada o no autorizada.");
             }
@@ -101,7 +101,7 @@ namespace WebApi.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var task = await _tareaRepository.GetTareaByIdAsync(id);
 
-            if (task == null || task.ProyectoId != projectId || task.UserId != userId)
+            if (task == null || task.ProyectoId != projectId || task.UserName != userId)
             {
                 return NotFound("Tarea no encontrada o no autorizada.");
             }
@@ -116,7 +116,7 @@ namespace WebApi.Controllers
             var project = await _projectRepository.GetProyectosByIdAsync(projectId);
 
             // 1. Verificar si el proyecto existe y el usuario actual es el propietario
-            if (project == null || project.UserId != currentUserId)
+            if (project == null || project.UserName != currentUserId)
             {
                 return NotFound("Proyecto no encontrado o no autorizado.");
             }
@@ -128,13 +128,6 @@ namespace WebApi.Controllers
             {
                 return NotFound("Tarea no encontrada o no pertenece a este proyecto.");
             }
-
-            // 3. Verificar que el nuevo usuario exista
-           // var newAssignedUser = await _userManager.FindByIdAsync(model.NewUserId);
-            //if (newAssignedUser == null)
-            //{
-            //    return BadRequest("El nuevo usuario no existe.");
-            //}
 
             // 4. Asignar la tarea
             await _tareaRepository.AssignTaskAsync(id, model.NewUserId);

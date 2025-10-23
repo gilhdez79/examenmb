@@ -23,7 +23,7 @@ namespace WebApi.Repository
         {
             return await _context.Users.FindAsync(id);
         }
-        public async Task<bool> ValidateUserAsync(LoginRequest loginRequest )
+        public async Task<bool> ValidateUserAsync(Login_Request loginRequest )
         {
 
             var _user = await _context.Users.FirstOrDefaultAsync(u=> u.Username == loginRequest.Username);

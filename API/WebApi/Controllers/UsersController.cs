@@ -4,6 +4,8 @@ using WebApi.Interface;
 
 namespace WebApi.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
@@ -14,7 +16,7 @@ namespace WebApi.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(string id)
         {
-           
+
             var user = await _userRepository.FindByIdAsync(id);
             if (user == null)
             {
